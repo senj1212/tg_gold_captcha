@@ -14,4 +14,4 @@ EARNINGS = float(os.getenv("EARNINGS"))
 list_chanel = [{"name": "LOLZ_NEWS", "url":"https://t.me/lolz_news"},
                {"name": "Страшно красиво", "url":"https://t.me/+b2A_8tcc2Q9kYTFi"}]
 
-admins_id = [739029720]
+admins_id = []
