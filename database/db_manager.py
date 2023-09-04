@@ -27,7 +27,7 @@ async def start_db():
 async def get_user_by_uid(uid: int) -> User:
     async with session_maker()() as session:
         async with session.begin():
-            result = await session.execute(select(User).where(User.user_id == uid))
+            result = await session.execute(select(User).where(User.user_id == str(uid)))
             user: User = result.one_or_none()
             if user is not None:
                 user = user[0]
@@ -37,7 +37,7 @@ async def get_user_by_uid(uid: int) -> User:
 async def set_last_captcha(uid: int, captcha: str) -> None:
     async with session_maker()() as session:
         async with session.begin():
-            result = await session.execute(select(User).where(User.user_id == uid))
+            result = await session.execute(select(User).where(User.user_id == str(uid)))
             user: User = result.one_or_none()
             if user is not None:
                 user = user[0]
@@ -47,7 +47,7 @@ async def set_last_captcha(uid: int, captcha: str) -> None:
 async def set_user_work(uid: int, work: bool) -> None:
     async with session_maker()() as session:
         async with session.begin():
-            result = await session.execute(select(User).where(User.user_id == uid))
+            result = await session.execute(select(User).where(User.user_id == str(uid)))
             user: User = result.one_or_none()
             if user is not None:
                 user = user[0]
@@ -57,7 +57,7 @@ async def set_user_work(uid: int, work: bool) -> None:
 async def set_user_wallet(uid: int, wallet: str) -> None:
     async with session_maker()() as session:
         async with session.begin():
-            result = await session.execute(select(User).where(User.user_id == uid))
+            result = await session.execute(select(User).where(User.user_id == str(uid)))
             user: User = result.one_or_none()
             if user is not None:
                 user = user[0]
@@ -67,7 +67,7 @@ async def set_user_wallet(uid: int, wallet: str) -> None:
 async def change_user_balance(uid: int, val: float) -> None:
     async with session_maker()() as session:
         async with session.begin():
-            result = await session.execute(select(User).where(User.user_id == uid))
+            result = await session.execute(select(User).where(User.user_id == str(uid)))
             user: User = result.one_or_none()
             if user is not None:
                 user = user[0]
@@ -77,14 +77,14 @@ async def change_user_balance(uid: int, val: float) -> None:
 async def add_user_in_db(uid: int):
     async with session_maker()() as session:
         async with session.begin():
-            user = User(uid)
+            user = User(str(uid))
             await session.merge(user)
 
 
 async def get_story_withdraw_by_uid(uid: int):
     async with session_maker()() as session:
         async with session.begin():
-            result = await session.execute(select(Withdraw).where(Withdraw.user_id == uid))
+            result = await session.execute(select(Withdraw).where(Withdraw.user_id == str(uid)))
             withdraws: User = result.fetchall()
             return withdraws
 
@@ -92,5 +92,5 @@ async def get_story_withdraw_by_uid(uid: int):
 async def add_story_withdraw(uid: int, money: int) -> None:
     async with session_maker()() as session:
         async with session.begin():
-            withdraw = Withdraw(uid, money)
+            withdraw = Withdraw(str(uid), money)
             await session.merge(withdraw)
